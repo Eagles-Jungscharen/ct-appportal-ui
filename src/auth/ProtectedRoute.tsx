@@ -1,7 +1,7 @@
-import { useAuth } from './useAuth'
+import { useAppAuth } from '../hooks/useAppAuth'
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading, login } = useAuth()
+  const { isAuthenticated, isLoading, login } = useAppAuth()
 
   if (isLoading) return null
 

@@ -12,7 +12,7 @@ const queryClient = new QueryClient({
   },
 })
 
-export function App() {
+export const App:React.FunctionComponent = () => {
   return (
     <FluentProvider theme={webLightTheme}>
       <QueryClientProvider client={queryClient}>

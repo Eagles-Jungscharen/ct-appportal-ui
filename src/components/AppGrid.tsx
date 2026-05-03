@@ -1,6 +1,6 @@
-import { makeStyles } from '@fluentui/react-components'
-import { AppCard } from './AppCard'
-import type { AppDto } from '../api/types'
+import { makeStyles } from '@fluentui/react-components';
+import type { AppDto } from '../api/types';
+import { AppCard } from './AppCard';
 
 const useStyles = makeStyles({
   grid: {
@@ -9,14 +9,15 @@ const useStyles = makeStyles({
     gap: '16px',
     padding: '16px 0',
   },
-})
+});
 
 interface AppGridProps {
-  apps: AppDto[]
+  apps: AppDto[];
 }
 
-export function AppGrid({ apps }: AppGridProps) {
-  const styles = useStyles()
+export const AppGrid: React.FunctionComponent<AppGridProps> = (props: AppGridProps) => {
+  const { apps } = props;
+  const styles = useStyles();
 
   return (
     <div className={styles.grid}>
@@ -24,5 +25,5 @@ export function AppGrid({ apps }: AppGridProps) {
         <AppCard key={app.id} app={app} />
       ))}
     </div>
-  )
-}
+  );
+};

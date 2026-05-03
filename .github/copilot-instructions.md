@@ -63,6 +63,42 @@ src/
 - **Formulare**: Keine externe Form-Library — native React State + FluentUI `Field`/`Input`
 - **Fehlerbehandlung**: `ApiResponseError` aus `src/api/client.ts` für API-Fehler
 
+## Komponenten-Stil
+
+Komponenten werden **immer** als `const`-Arrow-Function deklariert — **kein** `function`-Keyword.
+Props werden als eigenes `interface` direkt vor der Komponente definiert.
+Styles werden als `const useStyles = makeStyles({...})` direkt vor dem Props-Interface deklariert.
+
+Reihenfolge innerhalb einer Komponenten-Datei:
+1. Imports
+2. `const useStyles = makeStyles({...})`
+3. `interface XxxProps { ... }`
+4. `export const Xxx: React.FunctionComponent<XxxProps> = (props: XxxProps) => { ... }`
+
+Beispiel:
+```tsx
+const useStyles = makeStyles({
+  card: {
+    width: '280px',
+  },
+});
+
+interface AppCardProps {
+  app: AppDto;
+}
+
+export const AppCard: React.FunctionComponent<AppCardProps> = (props: AppCardProps) => {
+  const { app } = props;
+  const styles = useStyles();
+
+  return (
+    <Card className={styles.card}>
+      {/* ... */}
+    </Card>
+  );
+};
+```
+
 ## Routing
 - `/` — App-Portal (nur für eingeloggte User)
 - `/admin` — Admin-Dashboard (nur für Admins, sonst Redirect zu `/unauthorized`)

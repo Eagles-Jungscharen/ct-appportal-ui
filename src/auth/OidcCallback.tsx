@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth as useOidcAuth } from 'react-oidc-context'
 
 export function OidcCallback() {
-  const oidc = useOidcAuth()
-  const navigate = useNavigate()
+  const oidc = useOidcAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!oidc.isLoading && !oidc.error) {
-      navigate('/', { replace: true })
+      navigate('/', { replace: true });
     }
   }, [oidc.isLoading, oidc.error, navigate])
 

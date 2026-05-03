@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { fetchApps } from '../api/apps'
-import { useAuth } from '../auth/useAuth'
+import { useAppAuth } from './useAppAuth'
 
 export function useApps() {
-  const { token, isAuthenticated } = useAuth()
+  const { token, isAuthenticated } = useAppAuth()
 
   return useQuery({
     queryKey: ['apps'],

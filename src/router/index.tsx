@@ -1,9 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { ProtectedRoute } from '../auth/ProtectedRoute'
 import { AdminRoute } from '../auth/AdminRoute'
+import { HomeRoute } from '../auth/HomeRoute'
 import { OidcCallback } from '../auth/OidcCallback'
 import { PageShell } from '../components/PageShell'
-import { AppPortal } from '../pages/AppPortal'
 import { AdminDashboard } from '../pages/admin/AdminDashboard'
 import { Unauthorized } from '../pages/Unauthorized'
 
@@ -18,13 +17,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: (
-      <ProtectedRoute>
-        <PageShell>
-          <AppPortal />
-        </PageShell>
-      </ProtectedRoute>
-    ),
+    element: <HomeRoute />,
   },
   {
     path: '/admin',

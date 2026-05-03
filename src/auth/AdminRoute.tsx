@@ -1,10 +1,11 @@
-import { Navigate } from 'react-router-dom'
-import { useAuth } from './useAuth'
+import { Navigate } from 'react-router-dom';
+import { useAppAuth } from '../hooks/useAppAuth';
 
-export function AdminRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading, isAdmin } = useAuth()
+export const AdminRoute:React.FunctionComponent<React.PropsWithChildren> = (props:React.PropsWithChildren) => {
+  const { children } = props;
+  const { isAuthenticated, isLoading, isAdmin } = useAppAuth();
 
-  if (isLoading) return null
+  if (isLoading) return null;
 
   if (!isAuthenticated) return <Navigate to="/" replace />
 

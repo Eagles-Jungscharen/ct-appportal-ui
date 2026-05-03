@@ -10,11 +10,11 @@ export class ApiResponseError extends Error {
   }
 }
 
-export async function authFetch<T>(
+export const authFetch = async <T>(
   path: string,
   token: string,
   options: RequestInit = {},
-): Promise<T> {
+): Promise<T> => {
   const url = `${API_BASE_URL}${path}`
 
   const response = await fetch(url, {

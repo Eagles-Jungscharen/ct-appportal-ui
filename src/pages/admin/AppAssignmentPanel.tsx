@@ -1,24 +1,24 @@
-import { useState } from 'react'
 import {
-  OverlayDrawer,
+  Button,
+  DrawerBody,
   DrawerHeader,
   DrawerHeaderTitle,
-  DrawerBody,
-  Button,
   Field,
   Input,
+  makeStyles,
+  OverlayDrawer,
+  Spinner,
   Tag,
   TagGroup,
-  makeStyles,
   Text,
   tokens,
-  Spinner,
 } from '@fluentui/react-components'
-import { DismissRegular, AddRegular } from '@fluentui/react-icons'
+import { AddRegular, DismissRegular } from '@fluentui/react-icons'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 import { assignGroups } from '../../api/assignments'
-import { useAuth } from '../../auth/useAuth'
 import type { AppDto } from '../../api/types'
+import { useAppAuth } from '../../hooks/useAppAuth'
 
 const useStyles = makeStyles({
   body: {
@@ -49,7 +49,7 @@ interface AppAssignmentPanelProps {
 
 export function AppAssignmentPanel({ app, onClose }: AppAssignmentPanelProps) {
   const styles = useStyles()
-  const { token } = useAuth()
+  const { token } = useAppAuth()
   const queryClient = useQueryClient()
 
   const [groupIds, setGroupIds] = useState<string[]>([])

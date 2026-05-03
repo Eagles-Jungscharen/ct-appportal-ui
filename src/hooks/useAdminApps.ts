@@ -1,10 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { fetchAllApps, createApp, updateApp, deleteApp } from '../api/apps'
-import { useAuth } from '../auth/useAuth'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { createApp, deleteApp, fetchAllApps, updateApp } from '../api/apps'
 import type { AppDto } from '../api/types'
+import { useAppAuth } from './useAppAuth'
 
 export function useAdminApps() {
-  const { token } = useAuth()
+  const { token } = useAppAuth()
 
   return useQuery({
     queryKey: ['admin', 'apps'],
@@ -15,7 +15,7 @@ export function useAdminApps() {
 }
 
 export function useCreateApp() {
-  const { token } = useAuth()
+  const { token } = useAppAuth()
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -28,7 +28,7 @@ export function useCreateApp() {
 }
 
 export function useUpdateApp() {
-  const { token } = useAuth()
+  const { token } = useAppAuth()
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -42,7 +42,7 @@ export function useUpdateApp() {
 }
 
 export function useDeleteApp() {
-  const { token } = useAuth()
+  const { token } = useAppAuth()
   const queryClient = useQueryClient()
 
   return useMutation({

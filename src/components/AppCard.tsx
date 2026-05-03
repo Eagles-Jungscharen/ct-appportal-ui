@@ -1,14 +1,6 @@
-import {
-  Card,
-  CardHeader,
-  CardPreview,
-  Text,
-  Button,
-  makeStyles,
-  tokens,
-} from '@fluentui/react-components'
-import { OpenRegular } from '@fluentui/react-icons'
-import type { AppDto } from '../api/types'
+import { Button, Card, CardHeader, CardPreview, makeStyles, Text, tokens, } from '@fluentui/react-components';
+import { OpenRegular } from '@fluentui/react-icons';
+import type { AppDto } from '../api/types';
 
 const useStyles = makeStyles({
   card: {
@@ -42,8 +34,9 @@ interface AppCardProps {
   app: AppDto
 }
 
-export function AppCard({ app }: AppCardProps) {
-  const styles = useStyles()
+export const AppCard: React.FunctionComponent<AppCardProps> = (props: AppCardProps) => {
+  const { app } = props;
+  const styles = useStyles();
 
   return (
     <Card className={styles.card}>
@@ -74,5 +67,5 @@ export function AppCard({ app }: AppCardProps) {
         }
       />
     </Card>
-  )
-}
+  );
+};

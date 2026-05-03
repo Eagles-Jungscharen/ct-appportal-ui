@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import { registerClient } from '../api/clients'
-import { useAuth } from '../auth/useAuth'
 import type { ClientRegistrationDto } from '../api/types'
+import { useAppAuth } from './useAppAuth'
 
 export function useClientRegistration() {
-  const { token } = useAuth()
+  const { token } = useAppAuth()
 
   return useMutation({
     mutationFn: (data: ClientRegistrationDto) => registerClient(token!, data),

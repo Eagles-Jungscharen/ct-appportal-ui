@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
+      cors: true,
       proxy: {
         '/api': {
           target: apiBaseUrl,
