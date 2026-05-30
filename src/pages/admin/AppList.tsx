@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   DataGrid,
   DataGridHeader,
@@ -27,8 +27,9 @@ import {
   EditRegular,
   DeleteRegular,
   PeopleRegular,
+  ImageRegular,
 } from '@fluentui/react-icons';
-import { useAdminApps, useDeleteApp } from '../../hooks/useAdminApps';
+import { useAdminApps, useDeleteApp, useUploadAppIcon } from '../../hooks/useAdminApps';
 import { AppRegistrationForm } from './AppRegistrationForm';
 import { AppAssignmentPanel } from './AppAssignmentPanel';
 import type { AppDto } from '../../api/types';
@@ -80,11 +81,15 @@ export const AppList: React.FunctionComponent = () => {
   const styles = useStyles();
   const { data: apps, isLoading, isError } = useAdminApps();
   const deleteApp = useDeleteApp();
+  const uploadIcon = useUploadAppIcon();
 
   const [editApp, setEditApp] = useState<AppDto | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [assignApp, setAssignApp] = useState<AppDto | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<AppDto | null>(null);
+  const [iconUploadApp, setIconUploadApp] = useState<AppDto | null>(null);
+  const [iconFile, setIconFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (isLoading) {
     return (
@@ -150,6 +155,14 @@ export const AppList: React.FunctionComponent = () => {
                             onClick={() => setAssignApp(item)}
                           />
                         </Tooltip>
+                        <Tooltip content="Icon hochladen" relationship="label">
+                          <Button
+                            icon={<ImageRegular />}
+                            appearance="transparent"
+                            size="small"
+                            onClick={() => { setIconUploadApp(item); setIconFile(null); }}
+                          />
+                        </Tooltip>
                         <Tooltip content="Löschen" relationship="label">
                           <Button
                             icon={<DeleteRegular />}
@@ -211,6 +224,63 @@ export const AppList: React.FunctionComponent = () => {
                 disabled={deleteApp.isPending}
               >
                 Löschen
+              </Button>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
+
+      {/* Icon Upload Dialog */}
+      <Dialog
+        open={!!iconUploadApp}
+        onOpenChange={(_, d) => { if (!d.open) { setIconUploadApp(null); setIconFile(null); } }}
+      >
+        <DialogSurface>
+          <DialogBody>
+            <DialogTitle>Icon hochladen für «{iconUploadApp?.name}»</DialogTitle>
+            <DialogContent>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingTop: '8px' }}>
+                <Text size={200}>Erlaubte Formate: PNG, JPEG, SVG, WebP — max. 512 KB</Text>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Button
+                    appearance="secondary"
+                    size="small"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    Datei auswählen
+                  </Button>
+                  {iconFile && <Text size={200}>{iconFile.name}</Text>}
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/svg+xml,image/webp"
+                  style={{ display: 'none' }}
+                  onChange={(e) => setIconFile(e.target.files?.[0] ?? null)}
+                />
+              </div>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                appearance="secondary"
+                onClick={() => { setIconUploadApp(null); setIconFile(null); }}
+                disabled={uploadIcon.isPending}
+              >
+                Abbrechen
+              </Button>
+              <Button
+                appearance="primary"
+                disabled={!iconFile || uploadIcon.isPending}
+                onClick={() => {
+                  if (iconUploadApp && iconFile) {
+                    uploadIcon.mutate(
+                      { appId: iconUploadApp.id, file: iconFile },
+                      { onSuccess: () => { setIconUploadApp(null); setIconFile(null); } }
+                    );
+                  }
+                }}
+              >
+                Hochladen
               </Button>
             </DialogActions>
           </DialogBody>

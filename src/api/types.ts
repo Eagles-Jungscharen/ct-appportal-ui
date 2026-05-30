@@ -18,10 +18,13 @@ export interface AppDto {
   name: string
   description?: string
   url: string
-  iconUrl?: string
+  hasIcon: boolean
   redirectUris: string[]
   roles: RoleDto[]
 }
+
+// Typ für Create- und Update-Requests (hasIcon ist serverseitig abgeleitet)
+export type CreateUpdateAppData = Omit<AppDto, 'id' | 'hasIcon'>
 
 // --- Assignments ---
 export interface GroupAssignmentDto {

@@ -17,7 +17,7 @@ import {
 } from '@fluentui/react-components';
 import { AddRegular } from '@fluentui/react-icons';
 import { useCreateApp, useUpdateApp } from '../../hooks/useAdminApps';
-import type { AppDto, RoleDto } from '../../api/types';
+import type { AppDto, CreateUpdateAppData, RoleDto } from '../../api/types';
 
 const useStyles = makeStyles({
   form: {
@@ -54,7 +54,6 @@ export const AppRegistrationForm: React.FunctionComponent<AppRegistrationFormPro
   const [name, setName] = useState(app?.name ?? '');
   const [description, setDescription] = useState(app?.description ?? '');
   const [url, setUrl] = useState(app?.url ?? '');
-  const [iconUrl, setIconUrl] = useState(app?.iconUrl ?? '');
   const [roles, setRoles] = useState<RoleDto[]>(app?.roles ?? []);
   const [newRole, setNewRole] = useState('');
   const [redirectUris, setRedirectUris] = useState<string[]>(app?.redirectUris ?? []);
@@ -109,11 +108,10 @@ export const AppRegistrationForm: React.FunctionComponent<AppRegistrationFormPro
 
   function handleSubmit() {
     if (!validate()) return;
-    const data: Omit<AppDto, 'id'> = {
+    const data: CreateUpdateAppData = {
       name: name.trim(),
       description: description.trim() || undefined,
       url: url.trim(),
-      iconUrl: iconUrl.trim() || undefined,
       roles,
       redirectUris,
     };
@@ -139,9 +137,6 @@ export const AppRegistrationForm: React.FunctionComponent<AppRegistrationFormPro
               </Field>
               <Field label="URL *" validationMessage={errors.url} validationState={errors.url ? 'error' : 'none'}>
                 <Input value={url} onChange={(_, d) => setUrl(d.value)} placeholder="https://…" />
-              </Field>
-              <Field label="Icon URL">
-                <Input value={iconUrl} onChange={(_, d) => setIconUrl(d.value)} placeholder="https://…" />
               </Field>
 
               <Field label="Rollen">

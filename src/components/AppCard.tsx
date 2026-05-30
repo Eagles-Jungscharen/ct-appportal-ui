@@ -1,6 +1,7 @@
 import { Button, Card, CardHeader, CardPreview, makeStyles, Text, tokens, } from '@fluentui/react-components';
 import { OpenRegular } from '@fluentui/react-icons';
 import type { AppDto } from '../api/types';
+import { useAppIcon } from '../hooks/useAppIcon';
 
 const useStyles = makeStyles({
   card: {
@@ -37,12 +38,13 @@ interface AppCardProps {
 export const AppCard: React.FunctionComponent<AppCardProps> = (props: AppCardProps) => {
   const { app } = props;
   const styles = useStyles();
+  const iconUrl = useAppIcon(app.id, app.hasIcon);
 
   return (
     <Card className={styles.card}>
       <CardPreview className={styles.preview}>
-        {app.iconUrl ? (
-          <img src={app.iconUrl} alt={app.name} className={styles.icon} />
+        {iconUrl ? (
+          <img src={iconUrl} alt={app.name} className={styles.icon} />
         ) : (
           <span className={styles.iconFallback}>📦</span>
         )}
