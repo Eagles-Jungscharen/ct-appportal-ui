@@ -1,10 +1,10 @@
-import { createBrowserRouter } from 'react-router-dom'
-import { AdminRoute } from '../auth/AdminRoute'
-import { HomeRoute } from '../auth/HomeRoute'
-import { OidcCallback } from '../auth/OidcCallback'
-import { PageShell } from '../components/PageShell'
-import { AdminDashboard } from '../pages/admin/AdminDashboard'
-import { Unauthorized } from '../pages/Unauthorized'
+import { createBrowserRouter } from 'react-router-dom';
+import { AdminRoute } from '../auth/AdminRoute';
+import { HomeRoute } from '../auth/HomeRoute';
+import { OidcCallback } from '../auth/OidcCallback';
+import { PageShell } from '../components/PageShell';
+import { AdminDashboard } from '../pages/admin/AdminDashboard';
+import { Unauthorized } from '../pages/Unauthorized';
 
 export const router = createBrowserRouter([
   {
@@ -39,4 +39,4 @@ export const router = createBrowserRouter([
       </AdminRoute>
     ),
   },
-])
+]);

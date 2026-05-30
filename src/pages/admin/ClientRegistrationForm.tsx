@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   Dialog,
   DialogSurface,
@@ -18,11 +18,11 @@ import {
   MessageBarBody,
   MessageBarTitle,
   Spinner,
-} from '@fluentui/react-components'
-import { AddRegular, CopyRegular } from '@fluentui/react-icons'
-import { useClientRegistration } from '../../hooks/useClientRegistration'
-import { useUpdateClient } from '../../hooks/useClients'
-import type { ClientDto, ClientRegistrationResultDto } from '../../api/types'
+} from '@fluentui/react-components';
+import { AddRegular, CopyRegular } from '@fluentui/react-icons';
+import { useClientRegistration } from '../../hooks/useClientRegistration';
+import { useUpdateClient } from '../../hooks/useClients';
+import type { ClientDto, ClientRegistrationResultDto } from '../../api/types';
 
 const useStyles = makeStyles({
   form: {
@@ -46,72 +46,72 @@ const useStyles = makeStyles({
     fontFamily: 'monospace',
     wordBreak: 'break-all',
   },
-})
+});
 
 interface ClientRegistrationFormProps {
-  onClose: () => void
-  mode?: 'create' | 'edit'
-  initialValues?: ClientDto
+  onClose: () => void;
+  mode?: 'create' | 'edit';
+  initialValues?: ClientDto;
 }
 
 export function ClientRegistrationForm({ onClose, mode = 'create', initialValues }: ClientRegistrationFormProps) {
-  const styles = useStyles()
+  const styles = useStyles();
 
-  const [name, setName] = useState(initialValues?.name ?? '')
-  const [redirectUris, setRedirectUris] = useState<string[]>(initialValues?.redirectUris ?? [])
-  const [newUri, setNewUri] = useState('')
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [result, setResult] = useState<ClientRegistrationResultDto | null>(null)
-  const [copied, setCopied] = useState(false)
+  const [name, setName] = useState(initialValues?.name ?? '');
+  const [redirectUris, setRedirectUris] = useState<string[]>(initialValues?.redirectUris ?? []);
+  const [newUri, setNewUri] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [result, setResult] = useState<ClientRegistrationResultDto | null>(null);
+  const [copied, setCopied] = useState(false);
 
-  const { mutate: create, isPending: isCreating } = useClientRegistration()
-  const { mutate: update, isPending: isUpdating } = useUpdateClient()
-  const isPending = isCreating || isUpdating
+  const { mutate: create, isPending: isCreating } = useClientRegistration();
+  const { mutate: update, isPending: isUpdating } = useUpdateClient();
+  const isPending = isCreating || isUpdating;
 
   function validate() {
-    const e: Record<string, string> = {}
-    if (!name.trim()) e.name = 'Name ist erforderlich.'
-    if (redirectUris.length === 0) e.redirectUris = 'Mindestens eine Redirect-URI ist erforderlich.'
-    setErrors(e)
-    return Object.keys(e).length === 0
+    const e: Record<string, string> = {};
+    if (!name.trim()) e.name = 'Name ist erforderlich.';
+    if (redirectUris.length === 0) e.redirectUris = 'Mindestens eine Redirect-URI ist erforderlich.';
+    setErrors(e);
+    return Object.keys(e).length === 0;
   }
 
   function addUri() {
-    const t = newUri.trim()
-    if (!t) return
+    const t = newUri.trim();
+    if (!t) return;
     try {
-      new URL(t)
-      setRedirectUris((p) => [...p, t])
-      setNewUri('')
+      new URL(t);
+      setRedirectUris((p) => [...p, t]);
+      setNewUri('');
     } catch {
       // ungültige URL ignorieren
     }
   }
 
   function handleSubmit() {
-    if (!validate()) return
+    if (!validate()) return;
 
     if (mode === 'edit' && initialValues) {
       update(
         { clientId: initialValues.clientId, data: { name: name.trim(), redirectUris } },
         { onSuccess: () => onClose() },
-      )
+      );
     } else {
       create(
         { name: name.trim(), redirectUris },
         { onSuccess: (data) => setResult(data) },
-      )
+      );
     }
   }
 
   function copyClientId() {
-    if (!result) return
-    navigator.clipboard.writeText(result.clientId)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    if (!result) return;
+    navigator.clipboard.writeText(result.clientId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }
 
-  const title = mode === 'edit' ? 'OAuth2-Client bearbeiten' : 'OAuth2-Client registrieren'
+  const title = mode === 'edit' ? 'OAuth2-Client bearbeiten' : 'OAuth2-Client registrieren';
 
   return (
     <Dialog open onOpenChange={(_, d) => !d.open && onClose()}>
@@ -204,5 +204,5 @@ export function ClientRegistrationForm({ onClose, mode = 'create', initialValues
         </DialogBody>
       </DialogSurface>
     </Dialog>
-  )
+  );
 }

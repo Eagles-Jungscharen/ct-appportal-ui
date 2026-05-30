@@ -1,5 +1,5 @@
-import { authFetch } from './client'
-import type { GroupAssignmentDto } from './types'
+import { authFetch } from './client';
+import type { GroupAssignmentDto } from './types';
 
 export const assignGroups = async(
   token: string,
@@ -9,5 +9,5 @@ export const assignGroups = async(
   return await authFetch<void>(`/api/appmanagement/apps/${appId}/assignments`, token, {
     method: 'POST',
     body: JSON.stringify(data),
-  })
-}
+  });
+};

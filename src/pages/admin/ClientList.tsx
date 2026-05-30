@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   DataGrid,
   DataGridHeader,
@@ -21,11 +21,11 @@ import {
   DialogActions,
   DialogContent,
   Tooltip,
-} from '@fluentui/react-components'
-import { EditRegular, DeleteRegular } from '@fluentui/react-icons'
-import { useClients, useDeleteClient } from '../../hooks/useClients'
-import { ClientRegistrationForm } from './ClientRegistrationForm'
-import type { ClientDto } from '../../api/types'
+} from '@fluentui/react-components';
+import { EditRegular, DeleteRegular } from '@fluentui/react-icons';
+import { useClients, useDeleteClient } from '../../hooks/useClients';
+import { ClientRegistrationForm } from './ClientRegistrationForm';
+import type { ClientDto } from '../../api/types';
 
 const useStyles = makeStyles({
   root: { padding: '24px' },
@@ -51,7 +51,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     gap: '2px',
   },
-})
+});
 
 const columns: TableColumnDefinition<ClientDto>[] = [
   createTableColumn<ClientDto>({
@@ -78,22 +78,22 @@ const columns: TableColumnDefinition<ClientDto>[] = [
     renderHeaderCell: () => 'Redirect URIs',
     renderCell: (item) => item.redirectUris.join(', ') || '—',
   }),
-]
+];
 
 export const ClientList: React.FunctionComponent = () => {
-  const styles = useStyles()
-  const { data: clients, isLoading, isError } = useClients()
-  const deleteClient = useDeleteClient()
+  const styles = useStyles();
+  const { data: clients, isLoading, isError } = useClients();
+  const deleteClient = useDeleteClient();
 
-  const [editClient, setEditClient] = useState<ClientDto | null>(null)
-  const [deleteTarget, setDeleteTarget] = useState<ClientDto | null>(null)
+  const [editClient, setEditClient] = useState<ClientDto | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<ClientDto | null>(null);
 
   if (isLoading) {
     return (
       <div className={styles.center}>
         <Spinner label="Clients werden geladen…" />
       </div>
-    )
+    );
   }
 
   if (isError) {
@@ -101,7 +101,7 @@ export const ClientList: React.FunctionComponent = () => {
       <div className={styles.center}>
         <Text>Fehler beim Laden der OAuth2-Clients.</Text>
       </div>
-    )
+    );
   }
 
   return (
@@ -185,7 +185,7 @@ export const ClientList: React.FunctionComponent = () => {
                   if (deleteTarget) {
                     deleteClient.mutate(deleteTarget.clientId, {
                       onSuccess: () => setDeleteTarget(null),
-                    })
+                    });
                   }
                 }}
                 disabled={deleteClient.isPending}
@@ -198,5 +198,5 @@ export const ClientList: React.FunctionComponent = () => {
         </DialogSurface>
       </Dialog>
     </div>
-  )
-}
+  );
+};

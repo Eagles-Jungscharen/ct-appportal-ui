@@ -19,8 +19,8 @@ export default defineConfig([
       globals: globals.browser,
     },
     rules: {
-      semi: ['warn', 'always'],
-      'no-extra-semi': 'warn',
+      semi: ['error', 'always'],
+      'no-extra-semi': 'error',
     },
   },
 ])
