@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   Tab,
   TabList,
@@ -6,11 +6,11 @@ import {
   tokens,
   Text,
   Button,
-} from '@fluentui/react-components'
-import { AppsRegular, KeyRegular } from '@fluentui/react-icons'
-import { AppList } from './AppList'
-import { ClientList } from './ClientList'
-import { ClientRegistrationForm } from './ClientRegistrationForm'
+} from '@fluentui/react-components';
+import { AppsRegular, KeyRegular } from '@fluentui/react-icons';
+import { AppList } from './AppList';
+import { ClientList } from './ClientList';
+import { ClientRegistrationForm } from './ClientRegistrationForm';
 
 const useStyles = makeStyles({
   root: {
@@ -33,12 +33,12 @@ const useStyles = makeStyles({
     justifyContent: 'flex-end',
     marginBottom: '16px',
   },
-})
+});
 
-export function AdminDashboard() {
-  const styles = useStyles()
-  const [tab, setTab] = useState<string>('apps')
-  const [clientFormOpen, setClientFormOpen] = useState(false)
+export const AdminDashboard: React.FunctionComponent = () => {
+  const styles = useStyles();
+  const [tab, setTab] = useState<string>('apps');
+  const [clientFormOpen, setClientFormOpen] = useState(false);
 
   return (
     <div className={styles.root}>
@@ -82,5 +82,5 @@ export function AdminDashboard() {
         <ClientRegistrationForm onClose={() => setClientFormOpen(false)} />
       )}
     </div>
-  )
-}
+  );
+};

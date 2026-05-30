@@ -1,6 +1,6 @@
-import { Spinner, Text, makeStyles, tokens } from '@fluentui/react-components'
-import { AppGrid } from '../components/AppGrid'
-import { useApps } from '../hooks/useApps'
+import { Spinner, Text, makeStyles, tokens } from '@fluentui/react-components';
+import { AppGrid } from '../components/AppGrid';
+import { useApps } from '../hooks/useApps';
 
 const useStyles = makeStyles({
   root: {
@@ -26,11 +26,11 @@ const useStyles = makeStyles({
   empty: {
     color: tokens.colorNeutralForeground2,
   },
-})
+});
 
-export function AppPortal() {
-  const styles = useStyles()
-  const { data: apps, isLoading, isError } = useApps()
+export const AppPortal: React.FunctionComponent = () => {
+  const styles = useStyles();
+  const { data: apps, isLoading, isError } = useApps();
 
   return (
     <div className={styles.root}>
@@ -65,5 +65,5 @@ export function AppPortal() {
 
       {!isLoading && !isError && apps && apps.length > 0 && <AppGrid apps={apps} />}
     </div>
-  )
-}
+  );
+};

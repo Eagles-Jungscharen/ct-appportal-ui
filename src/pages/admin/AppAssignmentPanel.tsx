@@ -12,13 +12,13 @@ import {
   TagGroup,
   Text,
   tokens,
-} from '@fluentui/react-components'
-import { AddRegular, DismissRegular } from '@fluentui/react-icons'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
-import { assignGroups } from '../../api/assignments'
-import type { AppDto } from '../../api/types'
-import { useAppAuth } from '../../hooks/useAppAuth'
+} from '@fluentui/react-components';
+import { AddRegular, DismissRegular } from '@fluentui/react-icons';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { assignGroups } from '../../api/assignments';
+import type { AppDto } from '../../api/types';
+import { useAppAuth } from '../../hooks/useAppAuth';
 
 const useStyles = makeStyles({
   body: {
@@ -40,43 +40,44 @@ const useStyles = makeStyles({
   error: {
     color: tokens.colorStatusDangerForeground1,
   },
-})
+});
 
 interface AppAssignmentPanelProps {
   app: AppDto
   onClose: () => void
 }
 
-export function AppAssignmentPanel({ app, onClose }: AppAssignmentPanelProps) {
-  const styles = useStyles()
-  const { token } = useAppAuth()
-  const queryClient = useQueryClient()
+export const AppAssignmentPanel: React.FunctionComponent<AppAssignmentPanelProps> = (props:AppAssignmentPanelProps) => {
+  const { app, onClose } = props;
+  const styles = useStyles();
+  const { token } = useAppAuth();
+  const queryClient = useQueryClient();
 
-  const [groupIds, setGroupIds] = useState<string[]>([])
-  const [userIds, setUserIds] = useState<string[]>([])
-  const [newGroup, setNewGroup] = useState('')
-  const [newUser, setNewUser] = useState('')
+  const [groupIds, setGroupIds] = useState<string[]>([]);
+  const [userIds, setUserIds] = useState<string[]>([]);
+  const [newGroup, setNewGroup] = useState('');
+  const [newUser, setNewUser] = useState('');
 
   const mutation = useMutation({
     mutationFn: () =>
       assignGroups(token!, app.id, { appId: app.id, groupIds, userIds }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin', 'apps'] })
+      queryClient.invalidateQueries({ queryKey: ['admin', 'apps'] });
     },
-  })
+  });
 
   function addGroup() {
-    const t = newGroup.trim()
-    if (!t || groupIds.includes(t)) return
-    setGroupIds((p) => [...p, t])
-    setNewGroup('')
+    const t = newGroup.trim();
+    if (!t || groupIds.includes(t)) return;
+    setGroupIds((p) => [...p, t]);
+    setNewGroup('');
   }
 
   function addUser() {
-    const t = newUser.trim()
-    if (!t || userIds.includes(t)) return
-    setUserIds((p) => [...p, t])
-    setNewUser('')
+    const t = newUser.trim();
+    if (!t || userIds.includes(t)) return;
+    setUserIds((p) => [...p, t]);
+    setNewUser('');
   }
 
   return (
@@ -171,5 +172,5 @@ export function AppAssignmentPanel({ app, onClose }: AppAssignmentPanelProps) {
         </div>
       </DrawerBody>
     </OverlayDrawer>
-  )
-}
+  );
+};

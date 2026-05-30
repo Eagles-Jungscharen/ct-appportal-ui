@@ -2,7 +2,7 @@ import { API_BASE_URL } from '../config/api';
 import type { ApiError } from './types';
 
 export class ApiResponseError extends Error {
-  readonly apiError: ApiError
+  readonly apiError: ApiError;
   constructor(apiError: ApiError) {
     super(apiError.message);
     this.name = 'ApiResponseError';
@@ -42,4 +42,4 @@ export const authFetch = async <T>(
   }
 
   return response.json() as Promise<T>;
-}
+};

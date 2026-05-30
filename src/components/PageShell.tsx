@@ -1,7 +1,7 @@
-import { Avatar, Button, makeStyles, Text, tokens } from '@fluentui/react-components'
-import { ShieldPersonRegular, SignOutRegular } from '@fluentui/react-icons'
-import { Link, useLocation } from 'react-router-dom'
-import { useAppAuth } from '../hooks/useAppAuth'
+import { Avatar, Button, makeStyles, Text, tokens } from '@fluentui/react-components';
+import { ShieldPersonRegular, SignOutRegular } from '@fluentui/react-icons';
+import { Link, useLocation } from 'react-router-dom';
+import { useAppAuth } from '../hooks/useAppAuth';
 
 const useStyles = makeStyles({
   shell: {
@@ -60,12 +60,13 @@ const useStyles = makeStyles({
     flex: 1,
     backgroundColor: tokens.colorNeutralBackground1,
   },
-})
+});
 
-export function PageShell({ children }: { children: React.ReactNode }) {
-  const styles = useStyles()
-  const { isAdmin, displayName, logout } = useAppAuth()
-  const location = useLocation()
+export const PageShell: React.FunctionComponent<React.PropsWithChildren> = (props: React.PropsWithChildren) => {
+  const styles = useStyles();
+  const { isAdmin, displayName, logout } = useAppAuth();
+  const location = useLocation();
+  const { children } = props;
 
   return (
     <div className={styles.shell}>
@@ -107,5 +108,5 @@ export function PageShell({ children }: { children: React.ReactNode }) {
       </header>
       <main className={styles.main}>{children}</main>
     </div>
-  )
-}
+  );
+};

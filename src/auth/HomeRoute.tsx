@@ -12,7 +12,7 @@ export const HomeRoute: React.FunctionComponent = () => {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
         <Spinner size="large" label="Wird geladen…" />
       </div>
-    )
+    );
   }
 
   if (!isAuthenticated) {

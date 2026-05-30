@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   DataGrid,
   DataGridHeader,
@@ -21,17 +21,17 @@ import {
   DialogActions,
   DialogContent,
   Tooltip,
-} from '@fluentui/react-components'
+} from '@fluentui/react-components';
 import {
   AddRegular,
   EditRegular,
   DeleteRegular,
   PeopleRegular,
-} from '@fluentui/react-icons'
-import { useAdminApps, useDeleteApp } from '../../hooks/useAdminApps'
-import { AppRegistrationForm } from './AppRegistrationForm'
-import { AppAssignmentPanel } from './AppAssignmentPanel'
-import type { AppDto } from '../../api/types'
+} from '@fluentui/react-icons';
+import { useAdminApps, useDeleteApp } from '../../hooks/useAdminApps';
+import { AppRegistrationForm } from './AppRegistrationForm';
+import { AppAssignmentPanel } from './AppAssignmentPanel';
+import type { AppDto } from '../../api/types';
 
 const useStyles = makeStyles({
   root: { padding: '24px' },
@@ -52,7 +52,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     minHeight: '200px',
   },
-})
+});
 
 const columns: TableColumnDefinition<AppDto>[] = [
   createTableColumn<AppDto>({
@@ -74,24 +74,24 @@ const columns: TableColumnDefinition<AppDto>[] = [
     renderHeaderCell: () => 'Rollen',
     renderCell: (item) => item.roles.map((r) => r.name).join(', ') || '—',
   }),
-]
+];
 
-export function AppList() {
-  const styles = useStyles()
-  const { data: apps, isLoading, isError } = useAdminApps()
-  const deleteApp = useDeleteApp()
+export const AppList: React.FunctionComponent = () => {
+  const styles = useStyles();
+  const { data: apps, isLoading, isError } = useAdminApps();
+  const deleteApp = useDeleteApp();
 
-  const [editApp, setEditApp] = useState<AppDto | null>(null)
-  const [createOpen, setCreateOpen] = useState(false)
-  const [assignApp, setAssignApp] = useState<AppDto | null>(null)
-  const [deleteTarget, setDeleteTarget] = useState<AppDto | null>(null)
+  const [editApp, setEditApp] = useState<AppDto | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [assignApp, setAssignApp] = useState<AppDto | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<AppDto | null>(null);
 
   if (isLoading) {
     return (
       <div className={styles.center}>
         <Spinner label="Applikationen werden geladen…" />
       </div>
-    )
+    );
   }
 
   if (isError) {
@@ -99,7 +99,7 @@ export function AppList() {
       <div className={styles.center}>
         <Text>Fehler beim Laden der Applikationen.</Text>
       </div>
-    )
+    );
   }
 
   return (
@@ -175,8 +175,8 @@ export function AppList() {
         <AppRegistrationForm
           app={editApp ?? undefined}
           onClose={() => {
-            setCreateOpen(false)
-            setEditApp(null)
+            setCreateOpen(false);
+            setEditApp(null);
           }}
         />
       )}
@@ -205,7 +205,7 @@ export function AppList() {
                   if (deleteTarget) {
                     deleteApp.mutate(deleteTarget.id, {
                       onSettled: () => setDeleteTarget(null),
-                    })
+                    });
                   }
                 }}
                 disabled={deleteApp.isPending}
@@ -217,5 +217,5 @@ export function AppList() {
         </DialogSurface>
       </Dialog>
     </div>
-  )
-}
+  );
+};

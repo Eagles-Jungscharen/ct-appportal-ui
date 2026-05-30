@@ -1,4 +1,4 @@
-import type { AuthProviderProps } from 'react-oidc-context'
+import type { AuthProviderProps } from 'react-oidc-context';
 
 export const oidcConfig: AuthProviderProps = {
   authority: import.meta.env.VITE_OIDC_AUTHORITY,
@@ -10,6 +10,6 @@ export const oidcConfig: AuthProviderProps = {
   automaticSilentRenew: true,
   onSigninCallback: () => {
     // Remove OIDC query params from URL after callback without full reload
-    window.history.replaceState({}, document.title, window.location.pathname)
+    window.history.replaceState({}, document.title, window.location.pathname);
   },
-}
+};

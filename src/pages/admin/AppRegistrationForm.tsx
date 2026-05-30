@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   Dialog,
   DialogSurface,
@@ -14,10 +14,10 @@ import {
   tokens,
   Tag,
   TagGroup,
-} from '@fluentui/react-components'
-import { AddRegular } from '@fluentui/react-icons'
-import { useCreateApp, useUpdateApp } from '../../hooks/useAdminApps'
-import type { AppDto, RoleDto } from '../../api/types'
+} from '@fluentui/react-components';
+import { AddRegular } from '@fluentui/react-icons';
+import { useCreateApp, useUpdateApp } from '../../hooks/useAdminApps';
+import type { AppDto, RoleDto } from '../../api/types';
 
 const useStyles = makeStyles({
   form: {
@@ -35,79 +35,80 @@ const useStyles = makeStyles({
     color: tokens.colorStatusDangerForeground1,
     fontSize: tokens.fontSizeBase200,
   },
-})
+});
 
 interface AppRegistrationFormProps {
-  app?: AppDto
-  onClose: () => void
+  app?: AppDto;
+  onClose: () => void;
 }
 
 function generateId() {
-  return crypto.randomUUID()
+  return crypto.randomUUID();
 }
 
-export function AppRegistrationForm({ app, onClose }: AppRegistrationFormProps) {
-  const styles = useStyles()
-  const isEdit = !!app
+export const AppRegistrationForm: React.FunctionComponent<AppRegistrationFormProps> = (props: AppRegistrationFormProps) => {
+  const { app, onClose } = props;
+  const styles = useStyles();
+  const isEdit = !!app;
 
-  const [name, setName] = useState(app?.name ?? '')
-  const [description, setDescription] = useState(app?.description ?? '')
-  const [url, setUrl] = useState(app?.url ?? '')
-  const [iconUrl, setIconUrl] = useState(app?.iconUrl ?? '')
-  const [roles, setRoles] = useState<RoleDto[]>(app?.roles ?? [])
-  const [newRole, setNewRole] = useState('')
-  const [redirectUris, setRedirectUris] = useState<string[]>(app?.redirectUris ?? [])
-  const [newUri, setNewUri] = useState('')
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [name, setName] = useState(app?.name ?? '');
+  const [description, setDescription] = useState(app?.description ?? '');
+  const [url, setUrl] = useState(app?.url ?? '');
+  const [iconUrl, setIconUrl] = useState(app?.iconUrl ?? '');
+  const [roles, setRoles] = useState<RoleDto[]>(app?.roles ?? []);
+  const [newRole, setNewRole] = useState('');
+  const [redirectUris, setRedirectUris] = useState<string[]>(app?.redirectUris ?? []);
+  const [newUri, setNewUri] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const createApp = useCreateApp()
-  const updateApp = useUpdateApp()
-  const isPending = createApp.isPending || updateApp.isPending
+  const createApp = useCreateApp();
+  const updateApp = useUpdateApp();
+  const isPending = createApp.isPending || updateApp.isPending; 
 
   function validate() {
-    const e: Record<string, string> = {}
-    if (!name.trim()) e.name = 'Name ist erforderlich.'
-    if (!url.trim()) e.url = 'URL ist erforderlich.'
+    const e: Record<string, string> = {};
+    if (!name.trim()) e.name = 'Name ist erforderlich.';
+    if (!url.trim()) e.url = 'URL ist erforderlich.';
     else {
       try {
-        new URL(url)
+        new URL(url);
       } catch {
-        e.url = 'Ungültige URL.'
+        e.url = 'Ungültige URL.';
       }
     }
-    setErrors(e)
-    return Object.keys(e).length === 0
+    setErrors(e);
+    return Object.keys(e).length === 0;
   }
 
   function handleAddRole() {
-    const trimmed = newRole.trim()
-    if (!trimmed) return
-    setRoles((prev) => [...prev, { id: generateId(), name: trimmed }])
-    setNewRole('')
+    const trimmed = newRole.trim();
+    if (!trimmed) return;
+    setRoles((prev) => [...prev, { id: generateId(), name: trimmed }]);
+    setNewRole('');
   }
 
   function handleRemoveRole(roleId: string) {
-    setRoles((prev) => prev.filter((r) => r.id !== roleId))
+    setRoles((prev) => prev.filter((r) => r.id !== roleId));
   }
 
   function handleAddUri() {
-    const trimmed = newUri.trim()
-    if (!trimmed) return
+    const trimmed = newUri.trim();
+    if (!trimmed) return;
     try {
-      new URL(trimmed)
-      setRedirectUris((prev) => [...prev, trimmed])
-      setNewUri('')
+      new URL(trimmed);
+      setRedirectUris((prev) => [...prev, trimmed]);
+      setNewUri('');
     } catch {
       // ignore invalid URIs
     }
   }
 
   function handleRemoveUri(uri: string) {
-    setRedirectUris((prev) => prev.filter((u) => u !== uri))
+    setRedirectUris((prev) => prev.filter((u) => u !== uri));
   }
 
   function handleSubmit() {
-    if (!validate()) return
+    if (!validate()) return;
     const data: Omit<AppDto, 'id'> = {
       name: name.trim(),
       description: description.trim() || undefined,
@@ -115,11 +116,11 @@ export function AppRegistrationForm({ app, onClose }: AppRegistrationFormProps) 
       iconUrl: iconUrl.trim() || undefined,
       roles,
       redirectUris,
-    }
+    };
     if (isEdit && app) {
-      updateApp.mutate({ id: app.id, data }, { onSuccess: onClose })
+      updateApp.mutate({ id: app.id, data }, { onSuccess: onClose });
     } else {
-      createApp.mutate(data, { onSuccess: onClose })
+      createApp.mutate(data, { onSuccess: onClose });
     }
   }
 
@@ -199,5 +200,5 @@ export function AppRegistrationForm({ app, onClose }: AppRegistrationFormProps) 
         </DialogBody>
       </DialogSurface>
     </Dialog>
-  )
-}
+  );
+};

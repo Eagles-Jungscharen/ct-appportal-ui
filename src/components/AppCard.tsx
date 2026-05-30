@@ -28,7 +28,7 @@ const useStyles = makeStyles({
     color: tokens.colorNeutralForeground2,
     fontSize: tokens.fontSizeBase200,
   },
-})
+});
 
 interface AppCardProps {
   app: AppDto

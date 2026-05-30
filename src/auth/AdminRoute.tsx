@@ -7,9 +7,9 @@ export const AdminRoute:React.FunctionComponent<React.PropsWithChildren> = (prop
 
   if (isLoading) return null;
 
-  if (!isAuthenticated) return <Navigate to="/" replace />
+  if (!isAuthenticated) return <Navigate to="/" replace />;
 
-  if (!isAdmin) return <Navigate to="/unauthorized" replace />
+  if (!isAdmin) return <Navigate to="/unauthorized" replace />;
 
-  return <>{children}</>
-}
+  return <>{children}</>;
+};

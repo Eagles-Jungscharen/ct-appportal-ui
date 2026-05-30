@@ -1,6 +1,6 @@
-import { makeStyles, tokens, Button, Text } from '@fluentui/react-components'
-import { LockClosedRegular } from '@fluentui/react-icons'
-import { useNavigate } from 'react-router-dom'
+import { makeStyles, tokens, Button, Text } from '@fluentui/react-components';
+import { LockClosedRegular } from '@fluentui/react-icons';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -24,11 +24,11 @@ const useStyles = makeStyles({
   subtitle: {
     color: tokens.colorNeutralForeground2,
   },
-})
+}); 
 
-export function Unauthorized() {
-  const styles = useStyles()
-  const navigate = useNavigate()
+export const Unauthorized: React.FunctionComponent = () => {
+  const styles = useStyles();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.root}>
@@ -43,5 +43,5 @@ export function Unauthorized() {
         Zur Startseite
       </Button>
     </div>
-  )
-}
+  );
+};

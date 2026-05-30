@@ -54,7 +54,8 @@ interface ClientRegistrationFormProps {
   initialValues?: ClientDto;
 }
 
-export function ClientRegistrationForm({ onClose, mode = 'create', initialValues }: ClientRegistrationFormProps) {
+export const ClientRegistrationForm: React.FunctionComponent<ClientRegistrationFormProps> = (props: ClientRegistrationFormProps) => {
+  const { onClose, mode = 'create', initialValues } = props;
   const styles = useStyles();
 
   const [name, setName] = useState(initialValues?.name ?? '');
@@ -205,4 +206,4 @@ export function ClientRegistrationForm({ onClose, mode = 'create', initialValues
       </DialogSurface>
     </Dialog>
   );
-}
+};

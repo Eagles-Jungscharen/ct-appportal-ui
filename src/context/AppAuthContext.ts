@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { createContext } from 'react';
 
 export interface AppAuthContextValue {
     isAuthenticated: boolean
@@ -11,4 +11,4 @@ export interface AppAuthContextValue {
     logout: () => void
 }
 
-export const AppAuthContext = createContext<AppAuthContextValue | null>(null)
+export const AppAuthContext = createContext<AppAuthContextValue | null>(null);

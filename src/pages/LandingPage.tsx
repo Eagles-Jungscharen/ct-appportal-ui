@@ -1,6 +1,6 @@
-import { makeStyles, tokens, Button, Text, Card } from '@fluentui/react-components'
-import { AppsRegular, GridRegular, ShieldRegular, ArrowRightRegular } from '@fluentui/react-icons'
-import { useAppAuth } from '../hooks/useAppAuth'
+import { makeStyles, tokens, Button, Text, Card } from '@fluentui/react-components';
+import { AppsRegular, GridRegular, ShieldRegular, ArrowRightRegular } from '@fluentui/react-icons';
+import { useAppAuth } from '../hooks/useAppAuth';
 
 const useStyles = makeStyles({
   root: {
@@ -75,11 +75,11 @@ const useStyles = makeStyles({
     color: tokens.colorNeutralForeground2,
     lineHeight: '1.5',
   },
-})
+});
 
 export const LandingPage: React.FunctionComponent = () => {
-  const styles = useStyles()
-  const { login } = useAppAuth()
+  const styles = useStyles();
+  const { login } = useAppAuth();
 
   return (
     <div className={styles.root}>
@@ -124,5 +124,5 @@ export const LandingPage: React.FunctionComponent = () => {
         </Card>
       </section>
     </div>
-  )
-}
+  );
+};

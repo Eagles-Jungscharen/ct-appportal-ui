@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuth as useOidcAuth } from 'react-oidc-context'
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth as useOidcAuth } from 'react-oidc-context';
 
-export function OidcCallback() {
+export const OidcCallback:React.FunctionComponent = () => {
   const oidc = useOidcAuth();
   const navigate = useNavigate();
 
@@ -10,11 +10,11 @@ export function OidcCallback() {
     if (!oidc.isLoading && !oidc.error) {
       navigate('/', { replace: true });
     }
-  }, [oidc.isLoading, oidc.error, navigate])
+  }, [oidc.isLoading, oidc.error, navigate]);
 
   if (oidc.error) {
-    return <div>Authentifizierungsfehler: {oidc.error.message}</div>
+    return <div>Authentifizierungsfehler: {oidc.error.message}</div>;
   }
 
-  return <div>Anmeldung wird verarbeitet…</div>
-}
+  return <div>Anmeldung wird verarbeitet…</div>;
+};

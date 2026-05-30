@@ -1,14 +1,15 @@
-import { useAppAuth } from '../hooks/useAppAuth'
+import { useAppAuth } from '../hooks/useAppAuth';
 
-export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading, login } = useAppAuth()
+export const ProtectedRoute: React.FunctionComponent<React.PropsWithChildren> = (props:React.PropsWithChildren) => {
+  const { isAuthenticated, isLoading, login } = useAppAuth();
+  const { children } = props;
 
-  if (isLoading) return null
+  if (isLoading) return null;
 
   if (!isAuthenticated) {
-    login()
-    return null
+    login();
+    return null;
   }
 
-  return <>{children}</>
-}
+  return <>{children}</>;
+};
