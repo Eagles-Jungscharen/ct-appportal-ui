@@ -21,7 +21,8 @@ import {
 } from '@fluentui/react-components'
 import { AddRegular, CopyRegular } from '@fluentui/react-icons'
 import { useClientRegistration } from '../../hooks/useClientRegistration'
-import type { ClientRegistrationResultDto } from '../../api/types'
+import { useUpdateClient } from '../../hooks/useClients'
+import type { ClientDto, ClientRegistrationResultDto } from '../../api/types'
 
 const useStyles = makeStyles({
   form: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
     alignItems: 'center',
     flexWrap: 'wrap',
   },
-  secretBox: {
+  idBox: {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
@@ -45,33 +46,32 @@ const useStyles = makeStyles({
     fontFamily: 'monospace',
     wordBreak: 'break-all',
   },
-  warning: {
-    fontSize: tokens.fontSizeBase200,
-    color: tokens.colorStatusWarningForeground1,
-  },
 })
 
 interface ClientRegistrationFormProps {
   onClose: () => void
+  mode?: 'create' | 'edit'
+  initialValues?: ClientDto
 }
 
-export function ClientRegistrationForm({ onClose }: ClientRegistrationFormProps) {
+export function ClientRegistrationForm({ onClose, mode = 'create', initialValues }: ClientRegistrationFormProps) {
   const styles = useStyles()
 
-  const [appId, setAppId] = useState('')
-  const [clientName, setClientName] = useState('')
-  const [redirectUris, setRedirectUris] = useState<string[]>([])
+  const [name, setName] = useState(initialValues?.name ?? '')
+  const [redirectUris, setRedirectUris] = useState<string[]>(initialValues?.redirectUris ?? [])
   const [newUri, setNewUri] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [result, setResult] = useState<ClientRegistrationResultDto | null>(null)
   const [copied, setCopied] = useState(false)
 
-  const { mutate, isPending } = useClientRegistration()
+  const { mutate: create, isPending: isCreating } = useClientRegistration()
+  const { mutate: update, isPending: isUpdating } = useUpdateClient()
+  const isPending = isCreating || isUpdating
 
   function validate() {
     const e: Record<string, string> = {}
-    if (!appId.trim()) e.appId = 'App-ID ist erforderlich.'
-    if (!clientName.trim()) e.clientName = 'Client-Name ist erforderlich.'
+    if (!name.trim()) e.name = 'Name ist erforderlich.'
+    if (redirectUris.length === 0) e.redirectUris = 'Mindestens eine Redirect-URI ist erforderlich.'
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -84,30 +84,40 @@ export function ClientRegistrationForm({ onClose }: ClientRegistrationFormProps)
       setRedirectUris((p) => [...p, t])
       setNewUri('')
     } catch {
-      // ignore
+      // ungültige URL ignorieren
     }
   }
 
   function handleSubmit() {
     if (!validate()) return
-    mutate(
-      { appId: appId.trim(), clientName: clientName.trim(), redirectUris },
-      { onSuccess: (data) => setResult(data) },
-    )
+
+    if (mode === 'edit' && initialValues) {
+      update(
+        { clientId: initialValues.clientId, data: { name: name.trim(), redirectUris } },
+        { onSuccess: () => onClose() },
+      )
+    } else {
+      create(
+        { name: name.trim(), redirectUris },
+        { onSuccess: (data) => setResult(data) },
+      )
+    }
   }
 
-  function copySecret() {
+  function copyClientId() {
     if (!result) return
-    navigator.clipboard.writeText(result.clientSecret)
+    navigator.clipboard.writeText(result.clientId)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
+
+  const title = mode === 'edit' ? 'OAuth2-Client bearbeiten' : 'OAuth2-Client registrieren'
 
   return (
     <Dialog open onOpenChange={(_, d) => !d.open && onClose()}>
       <DialogSurface>
         <DialogBody>
-          <DialogTitle>OAuth2-Client registrieren</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
           <DialogContent>
             {result ? (
               <div className={styles.form}>
@@ -117,42 +127,33 @@ export function ClientRegistrationForm({ onClose }: ClientRegistrationFormProps)
                   </MessageBarBody>
                 </MessageBar>
                 <Field label="Client-ID">
-                  <Input value={result.clientId} readOnly />
-                </Field>
-                <Field label="Client-Secret">
-                  <div className={styles.secretBox}>
-                    <span style={{ flex: 1 }}>{result.clientSecret}</span>
+                  <div className={styles.idBox}>
+                    <span style={{ flex: 1 }}>{result.clientId}</span>
                     <Button
                       icon={<CopyRegular />}
                       size="small"
                       appearance="transparent"
-                      onClick={copySecret}
+                      onClick={copyClientId}
                     >
                       {copied ? 'Kopiert!' : 'Kopieren'}
                     </Button>
                   </div>
                 </Field>
-                <Text className={styles.warning}>
-                  ⚠ Das Client-Secret wird nur einmalig angezeigt. Bitte jetzt sicher speichern.
-                </Text>
               </div>
             ) : (
               <div className={styles.form}>
                 <Field
-                  label="App-ID *"
-                  validationMessage={errors.appId}
-                  validationState={errors.appId ? 'error' : 'none'}
+                  label="Name *"
+                  validationMessage={errors.name}
+                  validationState={errors.name ? 'error' : 'none'}
                 >
-                  <Input value={appId} onChange={(_, d) => setAppId(d.value)} />
+                  <Input value={name} onChange={(_, d) => setName(d.value)} />
                 </Field>
                 <Field
-                  label="Client-Name *"
-                  validationMessage={errors.clientName}
-                  validationState={errors.clientName ? 'error' : 'none'}
+                  label="Redirect-URIs *"
+                  validationMessage={errors.redirectUris}
+                  validationState={errors.redirectUris ? 'error' : 'none'}
                 >
-                  <Input value={clientName} onChange={(_, d) => setClientName(d.value)} />
-                </Field>
-                <Field label="Redirect-URIs">
                   <div className={styles.tagRow}>
                     {redirectUris.length > 0 && (
                       <TagGroup
@@ -177,6 +178,11 @@ export function ClientRegistrationForm({ onClose }: ClientRegistrationFormProps)
                     <Button icon={<AddRegular />} size="small" onClick={addUri} />
                   </div>
                 </Field>
+                {mode === 'edit' && initialValues && (
+                  <Field label="Owner">
+                    <Text>{initialValues.owner}</Text>
+                  </Field>
+                )}
               </div>
             )}
           </DialogContent>
@@ -191,7 +197,7 @@ export function ClientRegistrationForm({ onClose }: ClientRegistrationFormProps)
                 disabled={isPending}
                 icon={isPending ? <Spinner size="tiny" /> : undefined}
               >
-                Registrieren
+                {mode === 'edit' ? 'Speichern' : 'Registrieren'}
               </Button>
             )}
           </DialogActions>

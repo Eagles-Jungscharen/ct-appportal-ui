@@ -9,6 +9,7 @@ import {
 } from '@fluentui/react-components'
 import { AppsRegular, KeyRegular } from '@fluentui/react-icons'
 import { AppList } from './AppList'
+import { ClientList } from './ClientList'
 import { ClientRegistrationForm } from './ClientRegistrationForm'
 
 const useStyles = makeStyles({
@@ -75,14 +76,7 @@ export function AdminDashboard() {
       </TabList>
 
       {tab === 'apps' && <AppList />}
-      {tab === 'clients' && (
-        <div style={{ padding: '24px 0' }}>
-          <Text>
-            Registriere einen neuen OAuth2-Client beim Churchtool IDP für eine bestehende
-            Applikation.
-          </Text>
-        </div>
-      )}
+      {tab === 'clients' && <ClientList />}
 
       {clientFormOpen && (
         <ClientRegistrationForm onClose={() => setClientFormOpen(false)} />

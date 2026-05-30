@@ -30,16 +30,27 @@ export interface GroupAssignmentDto {
   userIds: string[]
 }
 
-// --- Client Registration ---
+// --- Clients ---
+export interface ClientDto {
+  clientId: string
+  name: string
+  owner: string
+  redirectUris: string[]
+}
+
 export interface ClientRegistrationDto {
-  appId: string
-  clientName: string
+  name: string
   redirectUris: string[]
 }
 
 export interface ClientRegistrationResultDto {
   clientId: string
-  clientSecret: string
+}
+
+export interface UpdateClientDto {
+  name?: string
+  owner?: string
+  redirectUris?: string[]
 }
 
 // --- API Errors ---
