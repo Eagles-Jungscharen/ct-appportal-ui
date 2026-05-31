@@ -71,11 +71,6 @@ const columns: TableColumnDefinition<AppDto>[] = [
       </a>
     ),
   }),
-  createTableColumn<AppDto>({
-    columnId: 'roles',
-    renderHeaderCell: () => 'Rollen',
-    renderCell: (item) => item.roles.map((r) => r.name).join(', ') || '—',
-  }),
 ];
 
 export const AppList: React.FunctionComponent = () => {

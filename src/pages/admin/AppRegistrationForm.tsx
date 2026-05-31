@@ -17,7 +17,7 @@ import {
 } from '@fluentui/react-components';
 import { AddRegular } from '@fluentui/react-icons';
 import { useCreateApp, useUpdateApp } from '../../hooks/useAdminApps';
-import type { AppDto, CreateUpdateAppData, RoleDto } from '../../api/types';
+import type { AppDto, CreateUpdateAppData } from '../../api/types';
 
 const useStyles = makeStyles({
   form: {
@@ -42,10 +42,6 @@ interface AppRegistrationFormProps {
   onClose: () => void;
 }
 
-function generateId() {
-  return crypto.randomUUID();
-}
-
 export const AppRegistrationForm: React.FunctionComponent<AppRegistrationFormProps> = (props: AppRegistrationFormProps) => {
   const { app, onClose } = props;
   const styles = useStyles();
@@ -54,8 +50,6 @@ export const AppRegistrationForm: React.FunctionComponent<AppRegistrationFormPro
   const [name, setName] = useState(app?.name ?? '');
   const [description, setDescription] = useState(app?.description ?? '');
   const [url, setUrl] = useState(app?.url ?? '');
-  const [roles, setRoles] = useState<RoleDto[]>(app?.roles ?? []);
-  const [newRole, setNewRole] = useState('');
   const [redirectUris, setRedirectUris] = useState<string[]>(app?.redirectUris ?? []);
   const [newUri, setNewUri] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -77,17 +71,6 @@ export const AppRegistrationForm: React.FunctionComponent<AppRegistrationFormPro
     }
     setErrors(e);
     return Object.keys(e).length === 0;
-  }
-
-  function handleAddRole() {
-    const trimmed = newRole.trim();
-    if (!trimmed) return;
-    setRoles((prev) => [...prev, { id: generateId(), name: trimmed }]);
-    setNewRole('');
-  }
-
-  function handleRemoveRole(roleId: string) {
-    setRoles((prev) => prev.filter((r) => r.id !== roleId));
   }
 
   function handleAddUri() {
@@ -112,7 +95,6 @@ export const AppRegistrationForm: React.FunctionComponent<AppRegistrationFormPro
       name: name.trim(),
       description: description.trim() || undefined,
       url: url.trim(),
-      roles,
       redirectUris,
     };
     if (isEdit && app) {
@@ -137,28 +119,6 @@ export const AppRegistrationForm: React.FunctionComponent<AppRegistrationFormPro
               </Field>
               <Field label="URL *" validationMessage={errors.url} validationState={errors.url ? 'error' : 'none'}>
                 <Input value={url} onChange={(_, d) => setUrl(d.value)} placeholder="https://…" />
-              </Field>
-
-              <Field label="Rollen">
-                <div className={styles.tagRow}>
-                  {roles.length > 0 && (
-                    <TagGroup onDismiss={(_, d) => handleRemoveRole(d.value as string)}>
-                      {roles.map((r) => (
-                        <Tag key={r.id} value={r.id} dismissible>
-                          {r.name}
-                        </Tag>
-                      ))}
-                    </TagGroup>
-                  )}
-                  <Input
-                    value={newRole}
-                    onChange={(_, d) => setNewRole(d.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleAddRole()}
-                    placeholder="Rolle hinzufügen…"
-                    size="small"
-                  />
-                  <Button icon={<AddRegular />} size="small" onClick={handleAddRole} />
-                </div>
               </Field>
 
               <Field label="Redirect-URIs">

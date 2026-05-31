@@ -7,12 +7,6 @@ export interface MeDto {
 }
 
 // --- Apps ---
-export interface RoleDto {
-  id: string
-  name: string
-  description?: string
-}
-
 export interface AppDto {
   id: string
   name: string
@@ -20,7 +14,6 @@ export interface AppDto {
   url: string
   hasIcon: boolean
   redirectUris: string[]
-  roles: RoleDto[]
 }
 
 // Typ für Create- und Update-Requests (hasIcon ist serverseitig abgeleitet)
