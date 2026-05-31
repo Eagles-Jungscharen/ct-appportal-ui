@@ -11,3 +11,10 @@ export const assignGroups = async(
     body: JSON.stringify(data),
   });
 };
+
+export const fetchAppAssignments = async (
+  token: string,
+  appId: string,
+): Promise<string[]> => {
+  return await authFetch<string[]>(`/api/appmanagement/apps/${appId}/assignments`, token);
+};

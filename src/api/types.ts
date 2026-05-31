@@ -6,6 +6,12 @@ export interface MeDto {
   groups: string[]
 }
 
+// --- Groups ---
+export interface GroupDto {
+  id: string
+  title: string
+}
+
 // --- Apps ---
 export interface AppDto {
   id: string
@@ -23,7 +29,6 @@ export type CreateUpdateAppData = Omit<AppDto, 'id' | 'hasIcon'>
 export interface GroupAssignmentDto {
   appId: string
   groupIds: string[]
-  userIds: string[]
 }
 
 // --- Clients ---
