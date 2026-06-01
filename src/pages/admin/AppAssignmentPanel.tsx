@@ -1,4 +1,5 @@
 import {
+  Body1,
   Button,
   Combobox,
   DrawerBody,
@@ -36,6 +37,11 @@ const useStyles = makeStyles({
     alignItems: 'flex-start',
     flexWrap: 'wrap',
     marginTop: '8px',
+  },
+  tags: {
+    display: 'flex',
+    gap: '8px',
+    flexWrap: 'wrap',
   },
   actions: {
     display: 'flex',
@@ -75,11 +81,6 @@ export const AppAssignmentPanel: React.FunctionComponent<AppAssignmentPanelProps
     setPrevExistingGroupIds(existingGroupIds);
   }
 
-  // Bestehende Zuweisungen in State laden sobald geladen
-  //useEffect(() => {
-  //  setGroupIds(existingGroupIds);
-  //}, [existingGroupIds]);
-
   const groupById = new Map<string, GroupDto>(allGroups.map((g) => [g.id, g]));
   const availableGroups = allGroups.filter((g) => !groupIds.includes(g.id));
   const filteredGroups = availableGroups.filter((g) =>
@@ -97,7 +98,7 @@ export const AppAssignmentPanel: React.FunctionComponent<AppAssignmentPanelProps
   const isLoading = loadingGroups || loadingAssignments;
 
   return (
-    <OverlayDrawer open position="end" onOpenChange={(_, d) => !d.open && onClose()}>
+    <OverlayDrawer open position="end" onOpenChange={(_, d) => !d.open && onClose()} size="medium">
       <DrawerHeader>
         <DrawerHeaderTitle
           action={
@@ -113,9 +114,9 @@ export const AppAssignmentPanel: React.FunctionComponent<AppAssignmentPanelProps
             <Spinner label="Daten werden geladen…" />
           ) : (
             <>
-              <Text>
+              <Body1>
                 Gruppen auswählen, die Zugriff auf <strong>{app.name}</strong> erhalten sollen.
-              </Text>
+              </Body1>
 
               <Field label="Zugewiesene Gruppen">
                 <div className={styles.tagRow}>
@@ -124,6 +125,7 @@ export const AppAssignmentPanel: React.FunctionComponent<AppAssignmentPanelProps
                       onDismiss={(_, d) =>
                         setGroupIds((p) => p.filter((id) => id !== d.value))
                       }
+                      className={styles.tags}
                     >
                       {groupIds.map((id) => (
                         <Tag key={id} value={id} dismissible>
