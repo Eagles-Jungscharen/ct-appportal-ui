@@ -1,6 +1,7 @@
 import { makeStyles, tokens, Button, Text, Card } from '@fluentui/react-components';
 import { AppsRegular, GridRegular, ShieldRegular, ArrowRightRegular } from '@fluentui/react-icons';
 import { useAppAuth } from '../hooks/useAppAuth';
+import { ORGANIZATION_NAME, APP_PORTAL_TITLE } from '../config/api';
 
 const useStyles = makeStyles({
   root: {
@@ -86,10 +87,10 @@ export const LandingPage: React.FunctionComponent = () => {
       <section className={styles.hero}>
         <AppsRegular className={styles.heroIcon} />
         <Text as="h1" className={styles.heroTitle}>
-          App-Portal
+          {APP_PORTAL_TITLE}
         </Text>
         <Text className={styles.heroTagline}>
-          Dein zentraler Einstiegspunkt für alle Applikationen der Eagles Jungscharen.
+          Dein zentraler Einstiegspunkt für alle Applikationen der {ORGANIZATION_NAME}.
           Melde dich an, um auf deine persönlichen Apps zuzugreifen.
         </Text>
         <Button
